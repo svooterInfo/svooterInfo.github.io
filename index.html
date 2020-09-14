@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.3/tiny-slider.css">
 <script src="js/tiny-slider.js"></script>
 
 <h2>Default</h2>
@@ -14,7 +15,7 @@
 </div>
 
 <h2>Hardware accelerated transition</h2>
-<div class="my-slider perf" style="transition-duration: 2s;">
+<div class="my-slider perf" style="transition-duration: 0.3s;">
     <div class="a">1</div>
     <div class="b">2</div>
     <div class="c">3</div>
@@ -29,12 +30,7 @@
 <style>
     .my-slider {
         width: 100%;
-        display: flex;
         background-color: gray;
-    }
-
-    .tns-ovh {
-        overflow: hidden;
     }
 
     .my-slider div {
@@ -59,8 +55,6 @@
     }
 
     .perf {
-        transition: all 600ms ease 0s;
-        will-change: transform;
     }
 </style>
 
