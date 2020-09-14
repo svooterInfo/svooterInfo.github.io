@@ -2492,6 +2492,7 @@ var tns = (function (){
 
         // set duration
         function resetDuration (el, str) {
+            document.querySelector('h2').innerText = str;
             el.style.transition = 'all ' + str + 'ms linear';
         }
 
@@ -2998,10 +2999,8 @@ var tns = (function (){
 
             lastPosition.x = initPosition.x = $.clientX;
             lastPosition.y = initPosition.y = $.clientY;
-            if (carousel) {
-                translateInit = parseFloat(container.style[transformAttr].replace(transformPrefix, ''));
-                resetDuration(container, 0);
-            }
+            translateInit = parseFloat(container.style[transformAttr].replace(transformPrefix, ''));
+            resetDuration(container, 0);
         }
 
         function onPanMove (e) {
@@ -3010,12 +3009,7 @@ var tns = (function (){
                 lastPosition.x = $.clientX;
                 lastPosition.y = $.clientY;
 
-                if (carousel) {
-                    if (!rafIndex) { rafIndex = raf(function(){ panUpdate(e); }); }
-                } else {
-                    if (moveDirectionExpected === '?') { moveDirectionExpected = getMoveDirectionExpected(); }
-                    if (moveDirectionExpected) { preventScroll = true; }
-                }
+                if (!rafIndex) { rafIndex = raf(function(){ panUpdate(e); }); }
             }
         }
 
@@ -3043,7 +3037,7 @@ var tns = (function (){
                     caf(rafIndex);
                     rafIndex = null;
                 }
-                if (carousel) { resetDuration(container, speed); }
+                resetDuration(container, speed);
                 panStart = false;
 
                 var $ = getEvent(e);
@@ -3061,8 +3055,6 @@ var tns = (function (){
                                 removeEvents(target, {'click': preventClick});
                             }});
                     }
-
-                    if (carousel) {
                         rafIndex = raf(function() {
                             if (horizontal && !autoWidth) {
                                 var indexMoved = - dist * items / (viewport + gutter);
@@ -3087,11 +3079,6 @@ var tns = (function (){
                             render(e, dist);
                             events.emit(isTouchEvent(e) ? 'touchEnd' : 'dragEnd', info(e));
                         });
-                    } else {
-                        if (moveDirectionExpected) {
-                            onControlsClick(e, dist > 0 ? -1 : 1);
-                        }
-                    }
                 }
             }
 
