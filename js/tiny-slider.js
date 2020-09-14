@@ -2977,24 +2977,12 @@ var tns = (function (){
         }
 
         function onPanStart (e) {
-            if (running) {
-                if (preventActionWhenRunning) { return; } else { onTransitionEnd(); }
-            }
-
-            if (autoplay && animating) { stopAutoplayTimer(); }
-
             panStart = true;
             if (rafIndex) {
-               // caf(rafIndex);
                 rafIndex = null;
             }
 
             var $ = getEvent(e);
-            // events.emit(isTouchEvent(e) ? 'touchStart' : 'dragStart', info(e));
-
-            if (!isTouchEvent(e) && ['img', 'a'].indexOf(getLowerCaseNodeName(getTarget(e))) >= 0) {
-                preventDefaultBehavior(e);
-            }
 
             lastPosition.x = initPosition.x = $.clientX;
             lastPosition.y = initPosition.y = $.clientY;
@@ -3010,12 +2998,7 @@ var tns = (function (){
                 lastPosition.x = $.clientX;
                 lastPosition.y = $.clientY;
 
-                if (carousel) {
-                    if (!rafIndex) { rafIndex = raf(function(){ panUpdate(e); }); }
-                } else {
-                    if (moveDirectionExpected === '?') { moveDirectionExpected = getMoveDirectionExpected(); }
-                    if (moveDirectionExpected) { preventScroll = true; }
-                }
+                if (!rafIndex) { rafIndex = raf(function(){ panUpdate(e); }); }
 
                 if ((typeof e.cancelable !== 'boolean' || e.cancelable) && preventScroll) {
                     alert('qq');
@@ -3025,17 +3008,10 @@ var tns = (function (){
         }
 
         function panUpdate (e) {
-          //  if (!moveDirectionExpected) {
-           //     panStart = false;
-           //    return;
-           // }
-          //  caf(rafIndex);
             if (panStart) { rafIndex = raf(function(){ panUpdate(e); }); }
 
             if (moveDirectionExpected === '?') { moveDirectionExpected = getMoveDirectionExpected(); }
             if (1) {
-                // if (!preventScroll && isTouchEvent(e)) { preventScroll = true; }
-
                 var x = translateInit,
                     dist = getDist(lastPosition, initPosition);
                 if (!horizontal || fixedWidth || autoWidth) {
@@ -3054,7 +3030,6 @@ var tns = (function (){
         function onPanEnd (e) {
             if (panStart) {
                 if (rafIndex) {
-                  //  caf(rafIndex);
                     rafIndex = null;
                 }
                 if (carousel) { resetDuration(container, ''); }
@@ -3099,7 +3074,6 @@ var tns = (function (){
                             }
 
                             render(e, dist);
-                            events.emit(isTouchEvent(e) ? 'touchEnd' : 'dragEnd', info(e));
                         });
                     } else {
                         if (moveDirectionExpected) {
