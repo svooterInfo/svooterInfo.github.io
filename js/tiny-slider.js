@@ -1323,7 +1323,7 @@ var tns = (function (){
             if (CSSMQ) {
                 // middle wrapper style
                 if (TRANSITIONDURATION) {
-                    var str = middleWrapper && options.autoHeight ? getTransitionDurationStyle(options.speed) : '';
+                    var str = '';
                     addCSSRule(sheet, '#' + slideId + '-mw', str, getCssRulesLength(sheet));
                 }
 
@@ -1334,7 +1334,6 @@ var tns = (function (){
                 // container styles
                 if (carousel) {
                     str = horizontal && !autoWidth ? 'width:' + getContainerWidth(options.fixedWidth, options.gutter, options.items) + ';' : '';
-                    if (TRANSITIONDURATION) { str += getTransitionDurationStyle(speed); }
                     addCSSRule(sheet, '#' + slideId, str, getCssRulesLength(sheet));
                 }
 
