@@ -55,7 +55,15 @@
     }
 
     .perf {
+        transition: opacity 300s ease;
         transform: translateZ(0);
+    }
+
+    .tns-item {
+        opacity: 0;
+    }
+    .tns-item.tns-slide-active {
+        opacity: 1;
     }
 </style>
 
@@ -71,6 +79,9 @@
       container: '.my-slider.perf',
       items: 3,
       slideBy: 'page',
+      animateDelay: 600,
+      loop: false,
+      mouseDrag: true,
       autoplay: false
   });
   </script>
