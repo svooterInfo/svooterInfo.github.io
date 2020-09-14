@@ -796,8 +796,8 @@ var tns = (function (){
             touchEvents = {
                 'touchstart': onPanStart,
                 'touchmove': onPanMove,
-                'touchend': onPanEnd,
-                'touchcancel': onPanEnd
+               // 'touchend': onPanEnd,
+                // 'touchcancel': onPanEnd
             }, dragEvents = {
                 'mousedown': onPanStart,
                 'mousemove': onPanMove,
@@ -2492,7 +2492,7 @@ var tns = (function (){
 
         // set duration
         function resetDuration (el, str) {
-            if (TRANSITIONDURATION) { el.style[TRANSITIONDURATION] = '0.3s'; }
+            if (TRANSITIONDURATION) { el.style[TRANSITIONDURATION] = str; }
         }
 
         function getSliderWidth () {
