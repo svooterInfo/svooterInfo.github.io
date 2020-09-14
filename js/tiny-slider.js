@@ -2985,7 +2985,7 @@ var tns = (function (){
 
             panStart = true;
             if (rafIndex) {
-                caf(rafIndex);
+               // caf(rafIndex);
                 rafIndex = null;
             }
 
@@ -3025,20 +3025,16 @@ var tns = (function (){
         }
 
         function panUpdate (e) {
-            if (!moveDirectionExpected) {
-                panStart = false;
-                return;
-            }
-            caf(rafIndex);
+          //  if (!moveDirectionExpected) {
+           //     panStart = false;
+           //    return;
+           // }
+          //  caf(rafIndex);
             if (panStart) { rafIndex = raf(function(){ panUpdate(e); }); }
 
             if (moveDirectionExpected === '?') { moveDirectionExpected = getMoveDirectionExpected(); }
-            if (moveDirectionExpected) {
-                if (!preventScroll && isTouchEvent(e)) { preventScroll = true; }
-
-                try {
-                    if (e.type) { events.emit(isTouchEvent(e) ? 'touchMove' : 'dragMove', info(e)); }
-                } catch(err) {}
+            if (1) {
+                // if (!preventScroll && isTouchEvent(e)) { preventScroll = true; }
 
                 var x = translateInit,
                     dist = getDist(lastPosition, initPosition);
@@ -3058,7 +3054,7 @@ var tns = (function (){
         function onPanEnd (e) {
             if (panStart) {
                 if (rafIndex) {
-                    caf(rafIndex);
+                  //  caf(rafIndex);
                     rafIndex = null;
                 }
                 if (carousel) { resetDuration(container, ''); }
