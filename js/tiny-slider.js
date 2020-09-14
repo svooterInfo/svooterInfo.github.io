@@ -7,12 +7,6 @@ var tns = (function (){
         || win.msRequestAnimationFrame
         || function(cb) { return setTimeout(cb, 16); };
 
-    var win$1 = window;
-
-    var caf = win$1.cancelAnimationFrame
-        || win$1.mozCancelAnimationFrame
-        || function(id){ clearTimeout(id); };
-
     function extend() {
         var obj, name, copy,
             target = arguments[0] || {},
@@ -209,11 +203,9 @@ var tns = (function (){
 
 // cross browsers addRule method
     function addCSSRule(sheet, selector, rules, index) {
-        // return raf(function() {
         'insertRule' in sheet ?
             sheet.insertRule(selector + '{' + rules + '}', index) :
             sheet.addRule(selector, rules, index);
-        // });
     }
 
 // cross browsers addRule method
@@ -1110,11 +1102,7 @@ var tns = (function (){
         }
 
         function getTransitionDurationStyle (speed) {
-            return getCSSPrefix(TRANSITIONDURATION, 18) + 'transition-duration:' + speed / 1000 + 's;';
-        }
-
-        function getAnimationDurationStyle (speed) {
-            return getCSSPrefix(ANIMATIONDURATION, 17) + 'animation-duration:' + speed / 1000 + 's;';
+            return 'transition: all ' + speed + 'ms ease 0s;';
         }
 
         function initStructure () {
@@ -1344,7 +1332,6 @@ var tns = (function (){
                 // set gallery items transition-duration
                 if (!carousel) {
                     if (TRANSITIONDURATION) { str += getTransitionDurationStyle(speed); }
-                    if (ANIMATIONDURATION) { str += getAnimationDurationStyle(speed); }
                 }
                 if (str) { addCSSRule(sheet, '#' + slideId + ' > .tns-item', str, getCssRulesLength(sheet)); }
 
@@ -1353,9 +1340,6 @@ var tns = (function (){
                 // set inline styles for inner wrapper & container
                 // insert stylesheet (one line) for slides only (since slides are many)
             } else {
-                // middle wrapper styles
-                update_carousel_transition_duration();
-
                 // inner wrapper styles
                 innerWrapper.style.cssText = getInnerWrapperStyles(edgePadding, gutter, fixedWidth, autoHeight);
 
@@ -1422,7 +1406,6 @@ var tns = (function (){
                     // set gallery items transition-duration
                     if (!carousel && 'speed' in opts) {
                         if (TRANSITIONDURATION) { slideStr += getTransitionDurationStyle(speedBP); }
-                        if (ANIMATIONDURATION) { slideStr += getAnimationDurationStyle(speedBP); }
                     }
                     if (slideStr) { slideStr = '#' + slideId + ' > .tns-item{' + slideStr + '}'; }
 
@@ -2320,13 +2303,6 @@ var tns = (function (){
             updateNavStatus();
         }
 
-
-        function update_carousel_transition_duration () {
-            if (carousel && autoHeight) {
-                middleWrapper.style[TRANSITIONDURATION] = speed / 1000 + 's';
-            }
-        }
-
         function getMaxSlideHeight (slideStart, slideRange) {
             var heights = [];
             for (var i = slideStart, l = Math.min(slideStart + slideRange, slideCountNew); i < l; i++) {
@@ -2492,7 +2468,10 @@ var tns = (function (){
 
         // set duration
         function resetDuration (el, str) {
-            if (TRANSITIONDURATION) { el.style[TRANSITIONDURATION] = str; }
+            console.log(parseFloat(str));
+            console.log(str);
+            var num = parseFloat(str);
+            el.style.transition = str ? 'all ' + num + 'ms ease 0s': null;
         }
 
         function getSliderWidth () {
