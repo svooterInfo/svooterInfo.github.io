@@ -2933,7 +2933,6 @@ var tns = (function (){
         }
 
         function getEvent (e) {
-            e = e || win.event;
             return isTouchEvent(e) ? e.changedTouches[0] : e;
         }
         function getTarget (e) {
@@ -2969,25 +2968,16 @@ var tns = (function (){
         }
 
         function onPanMove (e) {
-            if (1) {
                 var $ = getEvent(e);
                 lastPosition.x = $.clientX;
                 lastPosition.y = $.clientY;
-
+                console.log(rafIndex);
                 if (!rafIndex) { rafIndex = raf(function(){ panUpdate(e); }); }
-
-                if ((typeof e.cancelable !== 'boolean' || e.cancelable) && preventScroll) {
-                    alert('qq');
-                    e.preventDefault();
-                }
-            }
         }
 
         function panUpdate (e) {
             if (panStart) { rafIndex = raf(function(){ panUpdate(e); }); }
 
-            if (moveDirectionExpected === '?') { moveDirectionExpected = getMoveDirectionExpected(); }
-            if (1) {
                 var x = translateInit,
                     dist = getDist(lastPosition, initPosition);
                 if (!horizontal || fixedWidth || autoWidth) {
@@ -3000,7 +2990,6 @@ var tns = (function (){
                 }
 
                 container.style[transformAttr] = transformPrefix + x + transformPostfix;
-            }
         }
 
         function onPanEnd (e) {
