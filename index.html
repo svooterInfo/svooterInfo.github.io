@@ -15,7 +15,7 @@
 </div>
 
 <h2>Hardware accelerated transition</h2>
-<div class="my-slider perf">
+<div class="my-slider perf" style="transition-duration: 2s;">
     <div class="a">1</div>
     <div class="b">2</div>
     <div class="c">3</div>
@@ -56,6 +56,7 @@
 
     .perf {
         transition: all 600ms ease 0s;
+        will-change: transform;
     }
 </style>
 

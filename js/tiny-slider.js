@@ -1110,7 +1110,7 @@ var tns = (function (){
         }
 
         function getTransitionDurationStyle (speed) {
-            return '';
+            return getCSSPrefix(TRANSITIONDURATION, 18) + 'transition-duration:' + speed / 1000 + 's;';
         }
 
         function getAnimationDurationStyle (speed) {
@@ -2323,7 +2323,7 @@ var tns = (function (){
 
         function update_carousel_transition_duration () {
             if (carousel && autoHeight) {
-                // middleWrapper.style[TRANSITIONDURATION] = speed / 1000 + 's';
+                middleWrapper.style[TRANSITIONDURATION] = speed / 1000 + 's';
             }
         }
 
@@ -2492,7 +2492,7 @@ var tns = (function (){
 
         // set duration
         function resetDuration (el, str) {
-            // if (TRANSITIONDURATION) { el.style[TRANSITIONDURATION] = str; }
+            if (TRANSITIONDURATION) { el.style[TRANSITIONDURATION] = str; }
         }
 
         function getSliderWidth () {
