@@ -3022,15 +3022,14 @@ var tns = (function (){
             }
 
             if (moveDirectionExpected === '?') { moveDirectionExpected = getMoveDirectionExpected(); }
-            if (moveDirectionExpected) {
                 var x = translateInit,
                     dist = getDist(lastPosition, initPosition);
                     var percentageX = TRANSFORM ? dist * items * 100 / ((viewport + gutter) * slideCountNew): dist * 100 / (viewport + gutter);
                     x += percentageX;
                     x += '%';
 
+                 document.querySelector('h3').innerText =  x;
                 container.style[transformAttr] = transformPrefix + x + transformPostfix;
-            }
         }
 
         function onPanEnd (e) {
