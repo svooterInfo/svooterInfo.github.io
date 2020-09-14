@@ -7,6 +7,12 @@ var tns = (function (){
         || win.msRequestAnimationFrame
         || function(cb) { return setTimeout(cb, 16); };
 
+    var win$1 = window;
+
+    var caf = win$1.cancelAnimationFrame
+        || win$1.mozCancelAnimationFrame
+        || function(id){ clearTimeout(id); };
+
     function extend() {
         var obj, name, copy,
             target = arguments[0] || {},
@@ -203,9 +209,11 @@ var tns = (function (){
 
 // cross browsers addRule method
     function addCSSRule(sheet, selector, rules, index) {
+        // return raf(function() {
         'insertRule' in sheet ?
             sheet.insertRule(selector + '{' + rules + '}', index) :
             sheet.addRule(selector, rules, index);
+        // });
     }
 
 // cross browsers addRule method
@@ -788,8 +796,8 @@ var tns = (function (){
             touchEvents = {
                 'touchstart': onPanStart,
                 'touchmove': onPanMove,
-                 'touchend': onPanEnd,
-                 'touchcancel': onPanEnd
+                'touchend': onPanEnd,
+                'touchcancel': onPanEnd
             }, dragEvents = {
                 'mousedown': onPanStart,
                 'mousemove': onPanMove,
@@ -1102,7 +1110,11 @@ var tns = (function (){
         }
 
         function getTransitionDurationStyle (speed) {
-            return 'transition: all ' + speed + 'ms linear;';
+            return getCSSPrefix(TRANSITIONDURATION, 18) + 'transition-duration:' + speed / 1000 + 's;';
+        }
+
+        function getAnimationDurationStyle (speed) {
+            return getCSSPrefix(ANIMATIONDURATION, 17) + 'animation-duration:' + speed / 1000 + 's;';
         }
 
         function initStructure () {
@@ -1332,6 +1344,7 @@ var tns = (function (){
                 // set gallery items transition-duration
                 if (!carousel) {
                     if (TRANSITIONDURATION) { str += getTransitionDurationStyle(speed); }
+                    if (ANIMATIONDURATION) { str += getAnimationDurationStyle(speed); }
                 }
                 if (str) { addCSSRule(sheet, '#' + slideId + ' > .tns-item', str, getCssRulesLength(sheet)); }
 
@@ -1340,6 +1353,9 @@ var tns = (function (){
                 // set inline styles for inner wrapper & container
                 // insert stylesheet (one line) for slides only (since slides are many)
             } else {
+                // middle wrapper styles
+                update_carousel_transition_duration();
+
                 // inner wrapper styles
                 innerWrapper.style.cssText = getInnerWrapperStyles(edgePadding, gutter, fixedWidth, autoHeight);
 
@@ -1406,6 +1422,7 @@ var tns = (function (){
                     // set gallery items transition-duration
                     if (!carousel && 'speed' in opts) {
                         if (TRANSITIONDURATION) { slideStr += getTransitionDurationStyle(speedBP); }
+                        if (ANIMATIONDURATION) { slideStr += getAnimationDurationStyle(speedBP); }
                     }
                     if (slideStr) { slideStr = '#' + slideId + ' > .tns-item{' + slideStr + '}'; }
 
@@ -2303,6 +2320,13 @@ var tns = (function (){
             updateNavStatus();
         }
 
+
+        function update_carousel_transition_duration () {
+            if (carousel && autoHeight) {
+                middleWrapper.style[TRANSITIONDURATION] = speed / 1000 + 's';
+            }
+        }
+
         function getMaxSlideHeight (slideStart, slideRange) {
             var heights = [];
             for (var i = slideStart, l = Math.min(slideStart + slideRange, slideCountNew); i < l; i++) {
@@ -2468,7 +2492,7 @@ var tns = (function (){
 
         // set duration
         function resetDuration (el, str) {
-            el.style.transition = 'all ' + str + ' linear';
+            if (TRANSITIONDURATION) { el.style[TRANSITIONDURATION] = str; }
         }
 
         function getSliderWidth () {
@@ -2525,7 +2549,7 @@ var tns = (function (){
         }
 
         function doContainerTransformSilent (val) {
-            resetDuration(container, '0ms');
+            resetDuration(container, '0s');
             doContainerTransform(val);
         }
 
@@ -2560,7 +2584,7 @@ var tns = (function (){
         var transformCore = (function () {
             return carousel ?
                 function () {
-                    resetDuration(container, speed + 'ms');
+                    resetDuration(container, '');
                     if (TRANSITIONDURATION || !speed) {
                         // for morden browsers with non-zero duration or
                         // zero duration for all browsers
@@ -2933,6 +2957,7 @@ var tns = (function (){
         }
 
         function getEvent (e) {
+            e = e || win.event;
             return isTouchEvent(e) ? e.changedTouches[0] : e;
         }
         function getTarget (e) {
@@ -2952,31 +2977,67 @@ var tns = (function (){
         }
 
         function onPanStart (e) {
+            if (running) {
+                if (preventActionWhenRunning) { return; } else { onTransitionEnd(); }
+            }
+
+            if (autoplay && animating) { stopAutoplayTimer(); }
+
             panStart = true;
             if (rafIndex) {
+                caf(rafIndex);
                 rafIndex = null;
             }
 
             var $ = getEvent(e);
+            events.emit(isTouchEvent(e) ? 'touchStart' : 'dragStart', info(e));
+
+            if (!isTouchEvent(e) && ['img', 'a'].indexOf(getLowerCaseNodeName(getTarget(e))) >= 0) {
+                preventDefaultBehavior(e);
+            }
 
             lastPosition.x = initPosition.x = $.clientX;
             lastPosition.y = initPosition.y = $.clientY;
             if (carousel) {
                 translateInit = parseFloat(container.style[transformAttr].replace(transformPrefix, ''));
-                resetDuration(container, '0ms');
+                resetDuration(container, '0s');
             }
         }
 
         function onPanMove (e) {
+            if (panStart) {
                 var $ = getEvent(e);
                 lastPosition.x = $.clientX;
                 lastPosition.y = $.clientY;
-                console.log(rafIndex);
-                if (!rafIndex) { rafIndex = raf(function(){ panUpdate(e); }); }
+
+                if (carousel) {
+                   // if (!rafIndex) { rafIndex = raf(function(){ panUpdate(e); }); }
+                } else {
+                    if (moveDirectionExpected === '?') { moveDirectionExpected = getMoveDirectionExpected(); }
+                    if (moveDirectionExpected) { preventScroll = true; }
+                }
+
+                if ((typeof e.cancelable !== 'boolean' || e.cancelable) && preventScroll) {
+                    e.preventDefault();
+                }
+            }
         }
 
         function panUpdate (e) {
+            if (!moveDirectionExpected) {
+                panStart = false;
+                return;
+            }
+            caf(rafIndex);
             if (panStart) { rafIndex = raf(function(){ panUpdate(e); }); }
+
+            if (moveDirectionExpected === '?') { moveDirectionExpected = getMoveDirectionExpected(); }
+            if (moveDirectionExpected) {
+                if (!preventScroll && isTouchEvent(e)) { preventScroll = true; }
+
+                try {
+                    if (e.type) { events.emit(isTouchEvent(e) ? 'touchMove' : 'dragMove', info(e)); }
+                } catch(err) {}
 
                 var x = translateInit,
                     dist = getDist(lastPosition, initPosition);
@@ -2990,14 +3051,16 @@ var tns = (function (){
                 }
 
                 container.style[transformAttr] = transformPrefix + x + transformPostfix;
+            }
         }
 
         function onPanEnd (e) {
             if (panStart) {
                 if (rafIndex) {
+                    caf(rafIndex);
                     rafIndex = null;
                 }
-                if (carousel) { resetDuration(container, '300ms'); }
+                if (carousel) { resetDuration(container, ''); }
                 panStart = false;
 
                 var $ = getEvent(e);
@@ -3039,6 +3102,7 @@ var tns = (function (){
                             }
 
                             render(e, dist);
+                            events.emit(isTouchEvent(e) ? 'touchEnd' : 'dragEnd', info(e));
                         });
                     } else {
                         if (moveDirectionExpected) {
