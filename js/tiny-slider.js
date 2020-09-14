@@ -1110,7 +1110,7 @@ var tns = (function (){
         }
 
         function getTransitionDurationStyle (speed) {
-            return getCSSPrefix(TRANSITIONDURATION, 18) + 'transition-duration:' + speed / 1000 + 's;';
+            return 'transition: all ' + speed + 'ms linear;';
         }
 
         function getAnimationDurationStyle (speed) {
@@ -2323,7 +2323,7 @@ var tns = (function (){
 
         function update_carousel_transition_duration () {
             if (carousel && autoHeight) {
-                middleWrapper.style[TRANSITIONDURATION] = speed / 1000 + 's';
+                el.style.transition = 'all ' + speed + 'ms linear';
             }
         }
 
@@ -2492,7 +2492,7 @@ var tns = (function (){
 
         // set duration
         function resetDuration (el, str) {
-            if (TRANSITIONDURATION) { el.style[TRANSITIONDURATION] = str; }
+            el.style.transition = 'all ' + str + 'ms linear';
         }
 
         function getSliderWidth () {
@@ -2549,7 +2549,7 @@ var tns = (function (){
         }
 
         function doContainerTransformSilent (val) {
-            resetDuration(container, '0s');
+            resetDuration(container, 0);
             doContainerTransform(val);
         }
 
@@ -2584,7 +2584,7 @@ var tns = (function (){
         var transformCore = (function () {
             return carousel ?
                 function () {
-                    resetDuration(container, '');
+                    resetDuration(container, speed);
                     if (TRANSITIONDURATION || !speed) {
                         // for morden browsers with non-zero duration or
                         // zero duration for all browsers
@@ -3000,7 +3000,7 @@ var tns = (function (){
             lastPosition.y = initPosition.y = $.clientY;
             if (carousel) {
                 translateInit = parseFloat(container.style[transformAttr].replace(transformPrefix, ''));
-                resetDuration(container, '0s');
+                resetDuration(container, 0);
             }
         }
 
@@ -3011,7 +3011,7 @@ var tns = (function (){
                 lastPosition.y = $.clientY;
 
                 if (carousel) {
-                   // if (!rafIndex) { rafIndex = raf(function(){ panUpdate(e); }); }
+                    if (!rafIndex) { rafIndex = raf(function(){ panUpdate(e); }); }
                 } else {
                     if (moveDirectionExpected === '?') { moveDirectionExpected = getMoveDirectionExpected(); }
                     if (moveDirectionExpected) { preventScroll = true; }
@@ -3060,7 +3060,7 @@ var tns = (function (){
                     caf(rafIndex);
                     rafIndex = null;
                 }
-                if (carousel) { resetDuration(container, ''); }
+                if (carousel) { resetDuration(container, speed); }
                 panStart = false;
 
                 var $ = getEvent(e);
