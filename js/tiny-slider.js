@@ -2492,7 +2492,7 @@ var tns = (function (){
 
         // set duration
         function resetDuration (el, str) {
-            if (TRANSITIONDURATION) { el.style[TRANSITIONDURATION] = '0s'; }
+            if (TRANSITIONDURATION) { el.style['transition'] = 'all 0ms ease 0s'; }
         }
 
         function getSliderWidth () {
