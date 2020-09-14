@@ -2491,7 +2491,9 @@ var tns = (function (){
         }
 
         // set duration
-        function resetDuration (el, str) {}
+        function resetDuration (el, str) {
+            if (TRANSITIONDURATION) { el.style[TRANSITIONDURATION] = '0.3s'; }
+        }
 
         function getSliderWidth () {
             return fixedWidth ? (fixedWidth + gutter) * slideCountNew : slidePositions[slideCountNew];
