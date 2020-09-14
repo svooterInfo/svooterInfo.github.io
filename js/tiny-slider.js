@@ -881,13 +881,8 @@ var tns = (function (){
             transformAttr = TRANSFORM;
             transformPrefix = 'translate';
 
-            if (HAS3DTRANSFORMS) {
-                transformPrefix += horizontal ? '3d(' : '3d(0px, ';
-                transformPostfix = horizontal ? ', 0px, 0px)' : ', 0px)';
-            } else {
                 transformPrefix += horizontal ? 'X(' : 'Y(';
                 transformPostfix = ')';
-            }
 
         }
 
