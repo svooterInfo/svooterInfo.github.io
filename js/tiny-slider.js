@@ -2972,7 +2972,7 @@ var tns = (function (){
                 lastPosition.x = $.clientX;
                 lastPosition.y = $.clientY;
                 console.log(rafIndex);
-                if (!rafIndex) { rafIndex = raf(function(){ panUpdate(e); }); }
+                // if (!rafIndex) { rafIndex = raf(function(){ panUpdate(e); }); }
         }
 
         function panUpdate (e) {
