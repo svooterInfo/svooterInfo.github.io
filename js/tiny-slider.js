@@ -1110,6 +1110,7 @@ var tns = (function (){
         }
 
         function getTransitionDurationStyle (speed) {
+            document.querySelector('h2').innerText = speed;
             return 'transition: all ' + speed + 'ms linear;';
         }
 
