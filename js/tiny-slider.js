@@ -2525,7 +2525,7 @@ var tns = (function (){
         }
 
         function doContainerTransformSilent (val) {
-            resetDuration(container, '0s');
+            resetDuration(container, '0ms');
             doContainerTransform(val);
         }
 
@@ -2964,7 +2964,7 @@ var tns = (function (){
             lastPosition.y = initPosition.y = $.clientY;
             if (carousel) {
                 translateInit = parseFloat(container.style[transformAttr].replace(transformPrefix, ''));
-                resetDuration(container, '0s');
+                resetDuration(container, '0ms');
             }
         }
 
