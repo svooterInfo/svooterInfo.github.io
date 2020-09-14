@@ -2492,7 +2492,6 @@ var tns = (function (){
 
         // set duration
         function resetDuration (el, str) {
-            document.querySelector('h2').innerText = str;
             el.style.transition = 'all ' + str + 'ms linear';
         }
 
@@ -3015,8 +3014,11 @@ var tns = (function (){
 
         function panUpdate (e) {
             caf(rafIndex);
-            if (panStart) {
-                rafIndex = raf(function(){ panUpdate(e); });
+            rafIndex = raf(function(){ panUpdate(e); });
+
+            if (window.q !== moveDirectionExpected) {
+                window.q = moveDirectionExpected;
+                document.querySelector('h2').innerText +=  moveDirectionExpected;
             }
 
             if (moveDirectionExpected === '?') { moveDirectionExpected = getMoveDirectionExpected(); }
