@@ -2560,7 +2560,7 @@ var tns = (function (){
         var transformCore = (function () {
             return carousel ?
                 function () {
-                    resetDuration(container, '300ms');
+                    resetDuration(container, speed + 'ms');
                     if (TRANSITIONDURATION || !speed) {
                         // for morden browsers with non-zero duration or
                         // zero duration for all browsers
