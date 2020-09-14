@@ -796,8 +796,8 @@ var tns = (function (){
             touchEvents = {
                 'touchstart': onPanStart,
                 'touchmove': onPanMove,
-               // 'touchend': onPanEnd,
-                // 'touchcancel': onPanEnd
+                 'touchend': onPanEnd,
+                 'touchcancel': onPanEnd
             }, dragEvents = {
                 'mousedown': onPanStart,
                 'mousemove': onPanMove,
@@ -3005,7 +3005,7 @@ var tns = (function (){
         }
 
         function onPanMove (e) {
-            if (panStart) {
+            if (1) {
                 var $ = getEvent(e);
                 lastPosition.x = $.clientX;
                 lastPosition.y = $.clientY;
@@ -3018,6 +3018,7 @@ var tns = (function (){
                 }
 
                 if ((typeof e.cancelable !== 'boolean' || e.cancelable) && preventScroll) {
+                    alert('qq');
                     e.preventDefault();
                 }
             }
