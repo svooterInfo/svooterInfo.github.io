@@ -1,0 +1,68 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.3/tiny-slider.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.2/min/tiny-slider.js"></script>
+
+<div class="my-slider simple">
+    <div class="a">1</div>
+    <div class="b">2</div>
+    <div class="c">3</div>
+    <div class="a">4</div>
+    <div class="b">5</div>
+    <div class="c">6</div>
+</div>
+
+<div class="my-slider perf">
+    <div class="a">1</div>
+    <div class="b">2</div>
+    <div class="c">3</div>
+    <div class="a">4</div>
+    <div class="b">5</div>
+    <div class="c">6</div>
+</div>
+
+<style>
+    .my-slider {
+        width: 100%;
+        background-color: gray;
+    }
+
+    .my-slider div {
+        height: 300px;
+        font-size: 70px;
+        color: black;
+        text-align: center;
+        padding: 100px;
+        display: inline-block;
+    }
+
+    .a {
+        background-color: red;
+    }
+
+    .b {
+        background-color: green;
+    }
+
+    .c {
+        background-color: yellow;
+    }
+
+    .perf {
+        will-change: transform, opacity;
+    }
+</style>
+
+<script>
+  var slider = tns({
+      container: '.my-slider.simple',
+      items: 3,
+      slideBy: 'page',
+      autoplay: true
+  });
+
+  var slider = tns({
+      container: '.my-slider.perf',
+      items: 3,
+      slideBy: 'page',
+      autoplay: true
+  });
+  </script>
