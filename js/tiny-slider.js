@@ -2468,10 +2468,7 @@ var tns = (function (){
 
         // set duration
         function resetDuration (el, str) {
-            console.log(parseFloat(str));
-            console.log(str);
-            var num = parseFloat(str);
-            el.style.transition = str ? 'all ' + num + 'ms ease 0s': null;
+            el.style.transition = 'all ' + str + ' ease 0s';
         }
 
         function getSliderWidth () {
@@ -2563,7 +2560,7 @@ var tns = (function (){
         var transformCore = (function () {
             return carousel ?
                 function () {
-                    resetDuration(container, '');
+                    resetDuration(container, '300ms');
                     if (TRANSITIONDURATION || !speed) {
                         // for morden browsers with non-zero duration or
                         // zero duration for all browsers
@@ -3011,7 +3008,7 @@ var tns = (function (){
                 if (rafIndex) {
                     rafIndex = null;
                 }
-                if (carousel) { resetDuration(container, ''); }
+                if (carousel) { resetDuration(container, '300ms'); }
                 panStart = false;
 
                 var $ = getEvent(e);
