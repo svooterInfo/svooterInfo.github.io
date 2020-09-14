@@ -1102,7 +1102,7 @@ var tns = (function (){
         }
 
         function getTransitionDurationStyle (speed) {
-            return 'transition: all ' + speed + 'ms ease 0s;';
+            return 'transition: all ' + speed + 'ms linear;';
         }
 
         function initStructure () {
@@ -2468,7 +2468,7 @@ var tns = (function (){
 
         // set duration
         function resetDuration (el, str) {
-            el.style.transition = 'all ' + str + ' ease 0s';
+            el.style.transition = 'all ' + str + ' linear';
         }
 
         function getSliderWidth () {
