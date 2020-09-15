@@ -2987,9 +2987,7 @@ var tns = (function (){
             var $ = getEvent(e);
             events.emit(isTouchEvent(e) ? 'touchStart' : 'dragStart', info(e));
 
-            if (!isTouchEvent(e) && ['img', 'a'].indexOf(getLowerCaseNodeName(getTarget(e))) >= 0) {
-                preventDefaultBehavior(e);
-            }
+            preventDefaultBehavior(e);
 
             lastPosition.x = initPosition.x = $.clientX;
             lastPosition.y = initPosition.y = $.clientY;
